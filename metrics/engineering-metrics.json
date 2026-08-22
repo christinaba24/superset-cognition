@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0",
+  "generated_from": {
+    "source_file": "ISSUES.md",
+    "source_commit": "f2610e9dca",
+    "repo": "christinaba24/superset-cognition",
+    "note": "Baseline numbers are pre-computed from the ISSUES.md audit (scan of f2610e9dca). Consumers read this file instead of re-running pip-audit/npm audit/bandit/oxlint."
+  },
+  "last_updated": "2026-08-22",
+  "metrics": {
+    "dependency_vulnerabilities": {
+      "source": "ISSUES.md lines 13-16 (summary table) and 58-86 (per-ecosystem breakdown)",
+      "refresh": "pre-computed",
+      "totals": {
+        "advisories": 38,
+        "python_packages_affected": 8,
+        "totals_note": "advisories = 4 + 19 + 13 + 2. python_dev's 8 packages already include the 3 prod packages, so 8 is the distinct Python package count; ISSUES.md does not report a package count for the npm ecosystems."
+      },
+      "by_ecosystem": {
+        "python_prod": {
+          "tool": "pip-audit",
+          "target": "requirements/base.txt",
+          "advisories": 4,
+          "packages": 3,
+          "package_names": ["flask", "setuptools", "paramiko"],
+          "by_severity": {"high": 0, "moderate": 1, "low": 2, "unclassified": 1},
+          "notes": "flask GHSA-68rp-wp8r-4726 (low), setuptools GHSA-h35f-9h28-mq5c (moderate), paramiko GHSA-r374-rxx8-8654 (low, no fixed release). ISSUES.md reports 4 advisories but attributes severities to only 3, so the remainder is unclassified."
+        },
+        "python_dev": {
+          "tool": "pip-audit",
+          "target": "dev+prod environment (requirements/development.txt + venv toolchain)",
+          "advisories": 19,
+          "packages": 8,
+          "package_names": [
+            "mcp",
+            "jaraco-context",
+            "python-multipart",
+            "pytest",
+            "pip",
+            "flask",
+            "setuptools",
+            "paramiko"
+          ],
+          "by_severity": {"high": 5, "unclassified": 14},
+          "notes": "5 high: mcp 3x (GHSA-jpw9-pfvf-9f58, GHSA-vj7q-gjh5-988w, GHSA-hvrp-rf83-w775), jaraco-context 1x (GHSA-58pv-8j8x-9vj2), python-multipart 1x (GHSA-5rvq-cxj2-64vf). The remaining 14 are low/moderate and are not individually severity-split in ISSUES.md: python-multipart 2 low, pytest 1 moderate, pip 7 low-moderate, flask 1 low, setuptools 1 moderate, paramiko 1 low. The 8 packages include the 3 prod packages."
+        },
+        "frontend": {
+          "tool": "npm audit",
+          "target": "superset-frontend",
+          "advisories": 13,
+          "by_severity": {"high": 12, "moderate": 1}
+        },
+        "websocket": {
+          "tool": "npm audit",
+          "target": "superset-websocket",
+          "advisories": 2,
+          "by_severity": {"high": 2}
+        }
+      },
+      "stale_overrides": [
+        {
+          "package": "brace-expansion",
+          "current": "5.0.8",
+          "fix": ">=5.0.9",
+          "note": "Override \"minimatch@>=10\": {\"brace-expansion\": \">=5.0.8\"} pins a version still inside the vulnerable range (GHSA-rgw5-rvv9-x895). Affects superset-frontend and superset-websocket."
+        },
+        {
+          "package": "js-yaml",
+          "current": "4.3.0",
+          "fix": ">4.3.0",
+          "note": "overrides.lerna.js-yaml = \"^4.3.0\" but 4.3.0 is vulnerable (GHSA-5p4m-2wfm-xmqj); a 3.15.0 copy is also present. Dev/build tooling only."
+        },
+        {
+          "package": "dompurify",
+          "current": "3.4.12",
+          "fix": ">3.4.12",
+          "note": "Override pins ^3.4.11 -> resolves 3.4.12; advisory GHSA-55q2-fjhq-7xh7 covers <=3.4.12. Security-relevant for markdown/label rendering."
+        },
+        {
+          "package": "nanoid",
+          "current": "<3.3.18",
+          "fix": "3.3.18",
+          "note": "superset-websocket lockfile; npm audit fix resolves it (non-breaking)."
+        }
+      ]
+    },
+    "sast_code_quality": {
+      "source": "ISSUES.md lines 17-20 (summary table), 43 and 50-54 (rule breakdowns)",
+      "refresh": "pre-computed",
+      "bandit": {
+        "tool": "bandit -r superset/",
+        "total": 266,
+        "by_severity": {"high": 6, "medium": 41, "low": 219},
+        "by_rule": {
+          "B324": {"count": 6, "description": "weak MD5 hashing (cache/interface fingerprints)"},
+          "B704": {"count": 7, "description": "markupsafe.Markup on model-derived strings"},
+          "B608": {"count": 25, "description": "hardcoded SQL expression"},
+          "B301": {"count": 3, "description": "pickle deserialization"},
+          "B310": {"count": 3, "description": "urlopen with unvalidated scheme"},
+          "B102": {"count": 2, "description": "exec used"},
+          "B104": {"count": 1, "description": "binding to all interfaces"}
+        },
+        "notes": "by_rule covers the rules called out in ISSUES.md (47 findings); the remainder are unenumerated low-severity findings."
+      },
+      "oxlint": {
+        "tool": "npm run lint (oxlint)",
+        "total_warnings": 1480,
+        "errors": 0,
+        "by_rule": {
+          "prefer-destructuring": 573,
+          "react-hooks/exhaustive-deps": 382,
+          "no-unstable-nested-components": 151,
+          "no-console": 139,
+          "jsx-key": 80,
+          "rules-of-hooks": 47
+        },
+        "correctness_relevant_rules": ["rules-of-hooks", "jsx-key"],
+        "notes": "rules-of-hooks (47) and jsx-key (80) are the only correctness-relevant classes; the rest are mechanical/style and largely auto-fixable via npm run lint-fix."
+      }
+    },
+    "agent_pr_throughput": {
+      "source": "ISSUES.md lines 93-103 (automation notes) + live GitHub metadata",
+      "refresh": "live — the automation refreshes these fields from the GitHub API on every run",
+      "as_of": "2026-08-22",
+      "scope": "Devin-authored PRs in christinaba24/superset-cognition",
+      "prs_opened": 3,
+      "prs_merged": 1,
+      "review_comments_raised": 1,
+      "review_comments_resolved": 0,
+      "notes": "Seeded from the GitHub API on 2026-08-22: PR #1 (merged, 1 unresolved Devin Review comment), PRs #2 and #3 open. If a field cannot be determined it should be reported as null rather than a stale value."
+    }
+  }
+}
