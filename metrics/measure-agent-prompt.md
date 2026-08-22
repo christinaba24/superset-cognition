@@ -79,7 +79,7 @@ with metric 3 refreshed:
   "metrics": {
     "dependency_vulnerabilities": {
       "refresh": "pre-computed",
-      "totals": { "advisories": 38, "packages_affected": 11 },
+      "totals": { "advisories": 38, "python_packages_affected": 8 },
       "by_ecosystem": {
         "python_prod":  { "advisories": 4,  "packages": 3, "package_names": ["flask", "setuptools", "paramiko"] },
         "python_dev":   { "advisories": 19, "packages": 8 },
