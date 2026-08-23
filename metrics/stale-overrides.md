@@ -19,8 +19,6 @@ under the License.
 
 # Stale dependency overrides
 
-This is the workflow problem the daily repo-health sweep exists to catch, written down with the
-evidence, so it can be read without running anything.
 
 ## The pattern
 
